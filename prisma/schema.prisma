@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  username     String         @unique
+  password     String
+  name         String
+  role         Role
+  cuti       Cuti[]        @relation("userCuti")
+  createdAt    DateTime       @default(now())
+  CutiHistory CutiHistory[]
+}
+
+model Cuti {
+  id         Int            @id @default(autoincrement())
+  employee   User           @relation("userCuti", fields: [employeeId], references: [id])
+  employeeId Int
+  startDate  DateTime
+  endDate    DateTime
+  type       CutiType
+  reason     String
+  attachment String? // filename or url
+  status     CutiStatus    @default(draft)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  histories  CutiHistory[]
+}
+
+model CutiHistory {
+  id        Int        @id @default(autoincrement())
+  cuti     Cuti      @relation(fields: [cutiId], references: [id])
+  cutiId   Int
+  actor     User?      @relation(fields: [actorId], references: [id])
+  actorId   Int?
+  role      Role
+  action    ActionType
+  comment   String?
+  createdAt DateTime   @default(now())
+}
+
+enum Role {
+  EMPLOYEE
+  HEAD
+  GM
+}
+
+enum CutiType {
+  SAKIT
+  IZIN
+  TAHUNAN
+}
+
+enum CutiStatus {
+  draft
+  pending_head
+  revisi
+  pending_gm
+  approved
+  rejected
+}
+
+enum ActionType {
+  submit
+  approve
+  reject
+  request_revision
+  update
+}

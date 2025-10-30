@@ -8,6 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/cuti", cutiRoutes);
 
 const PORT = 4000;
 app.listen(PORT, () => console.log(`Server on ${PORT}`));

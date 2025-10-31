@@ -3,7 +3,6 @@ import { prisma } from "../prisma/client";
 import { AuthRequest } from "../middleware/auth";
 import { Role } from "@prisma/client";
 
-// 🟢 1. Employee submit cuti
 export async function submitCuti(req: AuthRequest, res: Response) {
   try {
     const { startDate, endDate, type, reason, attachment } = req.body;
@@ -40,7 +39,6 @@ export async function submitCuti(req: AuthRequest, res: Response) {
   }
 }
 
-// 🟡 2. List cuti (pagination + filter)
 export async function listCuti(req: AuthRequest, res: Response) {
   try {
     const { page = 1, pageSize = 5, status, mine } = req.query as any;
@@ -73,7 +71,6 @@ export async function listCuti(req: AuthRequest, res: Response) {
   }
 }
 
-// 🔵 3. Detail cuti (termasuk history)
 export async function getCutiDetail(req: AuthRequest, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -94,7 +91,6 @@ export async function getCutiDetail(req: AuthRequest, res: Response) {
   }
 }
 
-// 🟣 4. Employee update cuti (jika revisi)
 export async function updateCuti(req: AuthRequest, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -140,7 +136,6 @@ export async function updateCuti(req: AuthRequest, res: Response) {
   }
 }
 
-// 🔴 5. Action Head / GM (approve / reject / request_revision)
 export async function actionCuti(req: AuthRequest, res: Response) {
   try {
     const id = Number(req.params.id);
@@ -149,7 +144,6 @@ export async function actionCuti(req: AuthRequest, res: Response) {
     const cuti = await prisma.cuti.findUnique({ where: { id } });
     if (!cuti) return res.status(404).json({ error: "Cuti tidak ditemukan" });
 
-    // 🔐 Validasi role dan status
     if (req.user!.role === "HEAD" && cuti.status !== "pending_head")
       return res.status(400).json({ error: "Cuti bukan untuk Head" });
     if (req.user!.role === "GM" && cuti.status !== "pending_gm")

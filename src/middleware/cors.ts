@@ -14,7 +14,7 @@ const corsAccess = cors({
     }
   },
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"], // <- ini penting
+  allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 });
 

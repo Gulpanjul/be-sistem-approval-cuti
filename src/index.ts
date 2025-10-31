@@ -4,7 +4,7 @@ import cutiRoutes from "./routes/cuti.route";
 import corsAccess from "./middleware/cors";
 
 const app = express();
-app.use(corsAccess);
+app.options("*", corsAccess);
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

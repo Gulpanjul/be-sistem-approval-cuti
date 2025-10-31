@@ -81,7 +81,6 @@ Fitur utama:
 
 - Node.js dan npm/yarn/pnpm/bun
 - Database PostgreSQL berjalan
-- Backend API siap dijalankan
 
 ### Installation
 
@@ -96,11 +95,16 @@ Fitur utama:
     yarn install
    ```
 3. Setup environment variables (.env.local):
-   ```js
+   ```sh
    DATABASE_URL=postgresql://user:password@localhost:5432/db_name
    JWT_SECRET=your_jwt_secret
    ```
-4. Run development server
+4. Generate Prisma client & run migrations
+    ```sh
+    npx prisma generate       # Generate Prisma client
+    npx prisma migrate dev    # Run migrations to create database tables
+    ```
+5. Run development server
    ```sh
    npm run dev
    ```
